@@ -30,6 +30,19 @@ def needs_rehash(hashed_password):
     """Check if the hash needs to be updated to bcrypt."""
     return not hashed_password.startswith('$2b$')
 
+import re
+
+def is_strong_password(password):
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long."
+    if not re.search(r"[a-z]", password):
+        return False, "Password must contain at least one lowercase letter."
+    if not re.search(r"[A-Z]", password):
+        return False, "Password must contain at least one uppercase letter."
+    if not re.search(r"[0-9]", password):
+        return False, "Password must contain at least one digit."
+    return True, ""
+
 def ensure_users_db():
     # Primero, asegurarse de que las tablas de datos existen (empresas, comentarios)
     ensure_data_db()
@@ -44,7 +57,8 @@ def ensure_users_db():
             username TEXT UNIQUE,
             password TEXT,
             role TEXT,
-            company_id INTEGER
+            company_id INTEGER,
+            password_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )""")
         users = [
             ('alice', hash_password('password1'), 'user', None),

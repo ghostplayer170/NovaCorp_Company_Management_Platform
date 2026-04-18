@@ -1,7 +1,6 @@
 from flask import request, redirect, render_template, session, flash
 from server import app
-from db import get_users_connection, get_data_connection, hash_password
-
+from db import get_users_connection, get_data_connection, hash_password, is_strong_password
 
 @app.route('/admin/users')
 def admin_users():
@@ -25,6 +24,12 @@ def add_user():
     username = request.form['username']
     password = request.form['password']
     role = request.form['role']
+    
+    is_strong, msg = is_strong_password(password)
+    if not is_strong:
+        flash(msg, "danger")
+        return redirect('/admin/users')
+        
     company_id = request.form.get('company_id') if role == 'owner' else None
 
     conn = get_users_connection()
