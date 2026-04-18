@@ -1,4 +1,13 @@
+# Entorno
 .env
-semgrepScan.txt
-__pycache__/
 .venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Bases de datos
+*.db
+
+# Logs / resultados de herramientas
+semgrepScan.txt
