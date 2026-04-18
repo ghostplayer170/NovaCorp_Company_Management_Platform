@@ -1,15 +1,12 @@
 import sqlite3
-import hashlib
 import os
+from db import hash_password
 
 db_dir = os.path.join(os.path.dirname(__file__), 'db')
 os.makedirs(db_dir, exist_ok=True)
 
 users_db = os.path.join(db_dir, 'users.db')
 data_db = os.path.join(db_dir, 'data.db')
-
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
 
 # Crear base de datos de usuarios
 conn = sqlite3.connect(users_db)
