@@ -8,10 +8,15 @@
 
 ```bash
 pip install -r requirements.txt
+# Create a .env file with a secure secret key
+echo "FLASK_SECRET_KEY=your_secure_random_key_here" > .env
 python main.py
 ```
 
 Visit: `http://127.0.0.1:5000`
+
+> [!IMPORTANT]
+> The application requires a `FLASK_SECRET_KEY` environment variable (loaded from `.env`). If not provided, a new random key is generated on each restart, which will invalidate existing sessions.
 
 The database is automatically initialized on first run.
 
