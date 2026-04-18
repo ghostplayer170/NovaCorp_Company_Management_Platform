@@ -92,7 +92,7 @@ document.getElementById("role-select").addEventListener("change", function() {
                                 </select>
                             </div>
                             <div class="col-auto company-select-container" id="company-{{ user['username'] }}"
-                                 style="display: {% if user['role'] == 'owner' %}block{% else %}none{% endif %};">
+                                 {% if user['role'] == 'owner' %}style="display: block;"{% else %}style="display: none;"{% endif %}>
                                 <select name="company_id" class="form-select form-select-sm">
                                     <option value="">-- Company --</option>
                                     {% for company in companies %}
