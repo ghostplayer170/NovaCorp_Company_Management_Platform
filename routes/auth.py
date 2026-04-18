@@ -1,8 +1,9 @@
 from db import get_users_connection, hash_password, check_password, needs_rehash, is_strong_password
 from flask import request, redirect, render_template, session, flash
-from server import app, is_safe_url
+from server import app, is_safe_url, limiter
 
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")
 def login():
     if 'username' in session:
         return redirect('/dashboard')

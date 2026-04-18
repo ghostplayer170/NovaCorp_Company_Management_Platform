@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 app = Flask(__name__)
 # Use FLASK_SECRET_KEY from environment, or generate a random one for security
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24))
@@ -18,6 +21,12 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
 )
 csrf = CSRFProtect(app)
+limiter = Limiter(
+    key_func=get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://",
+)
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)

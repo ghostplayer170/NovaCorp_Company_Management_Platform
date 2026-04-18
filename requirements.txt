@@ -4,3 +4,4 @@ werkzeug==3.0.5
 Flask-WTF==1.2.2
 bcrypt==5.0.0
 python-dotenv==1.2.2
+Flask-Limiter==4.1.1
