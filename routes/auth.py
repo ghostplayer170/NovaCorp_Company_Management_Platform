@@ -1,6 +1,6 @@
 from db import get_users_connection, hash_password, check_password, needs_rehash
 from flask import request, redirect, render_template, session, flash
-from server import app
+from server import app, is_safe_url
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -26,6 +26,11 @@ def login():
             session['role'] = user['role']
             session['company_id'] = user['company_id']
             session.permanent = True
+            
+            # Validate next_url to prevent Open Redirect
+            if not next_url or not is_safe_url(next_url):
+                next_url = '/dashboard'
+                
             return redirect(next_url)
         else:
             conn.close()

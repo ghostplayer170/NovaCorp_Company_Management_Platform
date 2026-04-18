@@ -1,5 +1,6 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from urllib.parse import urlparse, urljoin
 from flask_wtf.csrf import CSRFProtect
 from datetime import timedelta
 from dotenv import load_dotenv
@@ -17,6 +18,12 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
 )
 csrf = CSRFProtect(app)
+
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and \
+           ref_url.netloc == test_url.netloc
 
 @app.errorhandler(404)
 def not_found(e):
