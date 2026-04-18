@@ -31,13 +31,12 @@ def edit_profile():
 
     if request.method == 'POST':
         new_username = request.form['username']
-        role = request.form.get('role', session['role'])
-        conn.execute("UPDATE users SET username = ?, role = ? WHERE username = ?",
-                     (new_username, role, session['username']))
+        # The role parameter is no longer processed from user input to prevent privilege escalation
+        conn.execute("UPDATE users SET username = ? WHERE username = ?",
+                     (new_username, session['username']))
         conn.commit()
         conn.close()
         session['username'] = new_username
-        session['role'] = role
         flash("Profile updated successfully.", "success")
         return redirect('/dashboard')
     conn.close()
